@@ -1,0 +1,31 @@
+name: modem-data-dp-training-env
+version: v1beta
+entity: product
+type: data
+tags:
+  - DPDomain.Network
+  - DPUsecase.Modem Failure Predictor
+  - DPTier.Source Aligned
+description: A data product that monitors modem performance by tracking resource utilization, hardware health, signal strength, and error occurrences over time.
+
+v1beta:
+  data:
+    meta:
+      title: Modem training dp
+      sourceCodeUrl: https://github.com/Siva1316/LLA_Reflection/tree/main/modem
+ 
+    collaborators:
+      - name: acies05
+        description: owner
+    
+    resource:
+      refType: dataos
+      ref: bundle:v1beta:modem-data-bundle-trng-env
+
+    inputs:
+      - refType: dataos
+        ref: dataos://modempg:public/modem_info
+
+    outputs:
+      - refType: dataos
+        ref: dataos://lakehouse:siva/modem_data

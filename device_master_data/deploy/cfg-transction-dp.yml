@@ -1,0 +1,31 @@
+name: device-master-data-dp-training-env
+version: v1beta
+entity: product
+type: data
+tags:
+  - DPDomain.Network
+  - DPUsecase.Device Failure Prediction
+  - DPTier.Source Aligned
+description: A data product that monitors modem performance by tracking resource utilization, hardware health, signal strength, and error occurrences over time.
+
+v1beta:
+  data:
+    meta:
+      title: Modem Performance training dp
+      sourceCodeUrl: https://github.com/Siva1316/LLA_Reflection/tree/main/modem_performance
+ 
+    collaborators:
+      - name: acies05
+        description: owner
+    
+    resource:
+      refType: dataos
+      ref: bundle:v1beta:device-master-data-bundle-trng-env
+
+    inputs:
+      - refType: dataos
+        ref:  dataos://postgresdeviceteledepot:public/device_master_data
+
+    outputs:
+      - refType: dataos
+        ref: dataos://lakehouse:siva/device_master_data

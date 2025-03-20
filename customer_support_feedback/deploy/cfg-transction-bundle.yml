@@ -1,0 +1,12 @@
+name: modem-performance-data-bundle-trng-env
+version: v1beta
+type: bundle
+tags:
+  - dataproduct
+description: This bundle resource is for the product affinity data product.
+layer: "user"
+bundle:
+  resources:
+    - id: modem-performance-data-quality
+      file: C:\Users\DELL\Desktop\DataOS\dataos-ctl-windows-amd64\windows-amd64\LLA_Reflection\modem_performance\build\quality\cfg-transction-qcheck.yml
+      workspace: public

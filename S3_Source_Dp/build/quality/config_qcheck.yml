@@ -1,0 +1,52 @@
+name: modem-data-qcheck
+version: v1
+type: workflow
+tags:
+  - workflow
+  - soda-checks
+description: The role involves conducting thorough and detailed quality analysis, including data assertion, of extensive raw modem data using the advanced features of the DataOS platform.
+workspace: public
+workflow:
+  #schedule:
+  #  cron: '*/5 * * * *'
+  #  concurrencyPolicy: Forbid
+  dag:
+    - name: modem-data-quality
+      description: The role involves conducting thorough and detailed quality analysis, including data assertion, of extensive raw modem data using the advanced features of the DataOS platform.
+      spec:
+        stack:  soda+python:1.0 
+        logLevel: INFO
+        compute: runnable-default
+        resources:
+          requests:
+            cpu: 1000m
+            memory: 250Mi
+          limits:
+            cpu: 1000m
+            memory: 250Mi
+        stackSpec:
+          inputs:
+            - dataset: dataos://lakehouse:siva/modem_data
+              options:
+                engine: minerva
+                clusterName: miniature
+              checks:
+                - missing_count(modem_id) = 0:
+                    attributes:
+                      category: Completeness
+                    name: Completeness of the modemid Column
+                - duplicate_percent(modem_id) < 0.10%:
+                    attributes:
+                      category: Uniqueness
+                    name: Uniqueness of the modemid Column
+                - schema:
+                    attributes:
+                      category: Schema
+                    fail:
+                      when required column missing:
+                      - modem_id
+                    name: Confirm that required columns are present
+
+              profile:
+                columns:
+                  - "*"                        

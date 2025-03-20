@@ -1,0 +1,86 @@
+name: device-master-data-qcheck
+version: v1
+type: workflow
+tags:
+  - workflow
+  - soda-checks
+description: The role involves conducting thorough and detailed quality analysis, including data assertion, of extensive raw modem data using the advanced features of the DataOS platform.
+workspace: public
+workflow:
+  #schedule:
+  #  cron: '*/5 * * * *'
+  #  concurrencyPolicy: Forbid
+  dag:
+    - name: device-master-data-quality
+      description: The role involves conducting thorough and detailed quality analysis, including data assertion, of extensive raw modem data using the advanced features of the DataOS platform.
+      spec:
+        stack:  soda+python:1.0 
+        logLevel: INFO
+        compute: runnable-default
+        resources:
+          requests:
+            cpu: 1000m
+            memory: 250Mi
+          limits:
+            cpu: 1000m
+            memory: 250Mi
+        stackSpec:
+          inputs:
+            - dataset: dataos://lakehouse:siva/device_master_data
+              options:
+                engine: minerva
+                clusterName: miniature
+              checks:
+                - duplicate_percent(device_id) < 0.10%:
+                    attributes:
+                      category: Uniqueness
+                    name: Uniqueness of the device id
+                - duplicate_percent(serial_number) < 0.10%:
+                    attributes:
+                      category: Uniqueness
+                    name: Uniqueness of the serial_number
+                
+                # Completeness Constraints
+                - missing_percent(cpu) < 1%:
+                    attributes:
+                      category: Accuracy
+                    name: Completeness of the CPU Column
+                - missing_percent(ram) < 1%:
+                    attributes:
+                      category: Accuracy
+                    name: Completeness of the RAM Column
+                - missing_percent(storage) < 1%:
+                    attributes:
+                      category: Accuracy
+                    name: Completeness of the Storage Column
+                - missing_percent(gpu) < 1%:
+                    attributes:
+                      category: Accuracy
+                    name: Completeness of the GPU Column
+                - schema:
+                    attributes:
+                      category: Schema
+                    fail:
+                      when required column missing:
+                      when required column missing:
+                      - device_id
+                      - serial_number
+                      - customer_id
+                      - brand
+                      - model
+                      - purchase_date
+                      - os_name
+                      - os_version
+                    name: Confirm that required columns are present
+                    warn:
+                      when required column missing:
+                      - warranty_status
+                      - region_name
+                      - language_name
+                      - network_latency
+                      - os_update_title
+              profile:
+                columns:
+                - '*'           
+
+              
