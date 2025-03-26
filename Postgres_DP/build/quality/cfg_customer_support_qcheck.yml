@@ -1,0 +1,76 @@
+name: customer-support-data-qcheck
+version: v1
+type: workflow
+tags:
+  - workflow
+  - soda-checks
+description: The role involves conducting thorough and detailed quality analysis, including data assertion, of extensive raw modem data using the advanced features of the DataOS platform.
+workspace: public
+workflow:
+  #schedule:
+  #  cron: '*/5 * * * *'
+  #  concurrencyPolicy: Forbid
+  dag:
+    - name: customer-support-data-quality
+      description: The role involves conducting thorough and detailed quality analysis, including data assertion, of extensive raw modem data using the advanced features of the DataOS platform.
+      spec:
+        stack:  soda+python:1.0 
+        logLevel: INFO
+        compute: runnable-default
+        resources:
+          requests:
+            cpu: 1000m
+            memory: 250Mi
+          limits:
+            cpu: 1000m
+            memory: 250Mi
+        stackSpec:
+          inputs:
+            - dataset: dataos://lakehouse:siva/customer_support_feedback
+              options:
+                engine: minerva
+                clusterName: miniature
+              checks:
+                - duplicate_percent(ticket_id) < 0.10%:
+                    attributes:
+                      category: Uniqueness
+                    name: Uniqueness of the device id
+                
+                # Completeness Constraints
+                - missing_percent(customer_id) < 1%:
+                    attributes:
+                      category: Accuracy
+                    name: Completeness of the CPU Column
+                - missing_percent(device_id) < 1%:
+                    attributes:
+                      category: Accuracy
+                    name: Completeness of the RAM Column
+                - missing_percent(issue_type) < 1%:
+                    attributes:
+                      category: Accuracy
+                    name: Completeness of the Storage Column
+                - missing_percent(service_type) < 1%:
+                    attributes:
+                      category: Accuracy
+                    name: Completeness of the GPU Column
+                - schema:
+                    attributes:
+                      category: Schema
+                    fail:
+                      when required column missing:
+                      - ticket_id
+                      - customer_id
+                      - device_id
+                      - issue_type
+                      - resolution
+                      - service_type
+                    name: Confirm that required columns are present
+                    warn:
+                      when required column missing:
+                      - time_to_fix
+                      - satisfaction_score 
+              profile:
+                columns:
+                - '*'           
+
+              

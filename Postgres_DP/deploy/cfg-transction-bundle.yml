@@ -1,0 +1,18 @@
+name: device-master-data-bundle-trng-env
+version: v1beta
+type: bundle
+tags:
+  - dataproduct
+description: This bundle resource is for the product affinity data product.
+layer: "user"
+bundle:
+  resources:
+    - id: device-master-data-quality
+      file: C:\Users\DELL\Desktop\DataOS\dataos-ctl-windows-amd64\windows-amd64\Device_Telemetry\Postgres_DP\build\quality\cfg_device_master_qcheck.yml
+      workspace: public
+    - id: customer-info-data-quality
+      file: C:\Users\DELL\Desktop\DataOS\dataos-ctl-windows-amd64\windows-amd64\Device_Telemetry\Postgres_DP\build\quality\cfg_customer_info_qcheck.yml
+      workspace: public
+    - id: customer-support-data-quality
+      file: C:\Users\DELL\Desktop\DataOS\dataos-ctl-windows-amd64\windows-amd64\Device_Telemetry\Postgres_DP\build\quality\cfg_customer_support_qcheck.yml
+      workspace: public

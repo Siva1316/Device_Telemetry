@@ -1,0 +1,77 @@
+name: customer-info-data-qcheck
+version: v1
+type: workflow
+tags:
+  - workflow
+  - soda-checks
+description: The role involves conducting thorough and detailed quality analysis, including data assertion, of extensive raw modem data using the advanced features of the DataOS platform.
+workspace: public
+workflow:
+  #schedule:
+  #  cron: '*/5 * * * *'
+  #  concurrencyPolicy: Forbid
+  dag:
+    - name: customer-info-quality
+      description: The role involves conducting thorough and detailed quality analysis, including data assertion, of extensive raw modem data using the advanced features of the DataOS platform.
+      spec:
+        stack:  soda+python:1.0 
+        logLevel: INFO
+        compute: runnable-default
+        resources:
+          requests:
+            cpu: 1000m
+            memory: 250Mi
+          limits:
+            cpu: 1000m
+            memory: 250Mi
+        stackSpec:
+          inputs:
+            - dataset: dataos://lakehouse:siva/customer_info
+              options:
+                engine: minerva
+                clusterName: miniature
+              checks:
+                - duplicate_percent(customer_id) < 0.10%:
+                    attributes:
+                      category: Uniqueness
+                    name: Uniqueness of the device id
+                - duplicate_percent(email) < 0.10%:
+                    attributes:
+                      category: Uniqueness
+                    name: Uniqueness of the serial_number
+                
+                # Completeness Constraints
+                - missing_percent(name) < 1%:
+                    attributes:
+                      category: Accuracy
+                    name: Completeness of the CPU Column
+                - missing_percent(email) < 1%:
+                    attributes:
+                      category: Accuracy
+                    name: Completeness of the RAM Column
+                - missing_percent(phone) < 1%:
+                    attributes:
+                      category: Accuracy
+                    name: Completeness of the Storage Column
+
+                - schema:
+                    attributes:
+                      category: Schema
+                    fail:
+                      when required column missing:
+                      - customer_id
+                      - name
+                      - email
+                      - phone
+                      - address
+                    name: Confirm that required columns are present  
+                    warn:
+                      when required column missing:
+                      - purchase_history
+                      - loyalty_status
+                      - warranty_status 
+              profile:
+                columns:
+                - '*'           
+
+              

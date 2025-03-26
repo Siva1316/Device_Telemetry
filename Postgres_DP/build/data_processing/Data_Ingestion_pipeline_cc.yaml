@@ -1,0 +1,23 @@
+version: v1
+name: postgres-device-telemetry-pipeling
+type: workflow
+tags:
+description: The "credit-insights-siva-pipeline" is a data pipeline related to customer data related to credit data
+workflow:
+  # schedule:
+  #   cron: '*/2 * * * *'
+  #   endOn: '2025-01-21T22:00:00Z'
+  #   concurrencyPolicy: Forbid
+  dag: 
+    - name: device-master-data
+      file: Device_Telemetry/Postgres_DP/build/data_processing/cfg_device_master_data.yml
+
+    - name: customer-info-data
+      file: Device_Telemetry/Postgres_DP/build/data_processing/cfg_customer_info_data.yml
+      dependencies:
+        - device-master-data
+    
+    - name: customer-support-data
+      file: Device_Telemetry/Postgres_DP/build/data_processing/cfg_customer_support_data.yml
+      dependencies:
+        - customer-info-data

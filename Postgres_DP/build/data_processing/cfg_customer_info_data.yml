@@ -1,0 +1,63 @@
+# Data Ingestion
+version: v1
+name: customer-info-data-trng-env
+type: workflow
+tags:
+  - crm
+  - tainingenv
+  - modem performance data
+description: Ingesting data in lakehouse
+workflow:
+  # schedule:
+  #   cron: '*/2 * * * *'
+  #   endOn: '2025-01-21T22:00:00Z'
+  #   concurrencyPolicy: Forbid
+  dag:
+    - name: dg-customer-info-data
+      # title: flatten Data Ingester
+      description: The job ingests modem performance data from S3 into icebase zone
+      spec:
+        tags:
+          - crm
+        stack: flare:6.0
+        compute: runnable-default
+        stackSpec:
+          driver:
+            coreLimit: 2000m
+            cores: 2
+            memory: 3000m
+          executor:
+            coreLimit: 3000m
+            cores: 2
+            instances: 2
+            memory: 4000m
+          job:
+            explain: true
+            inputs:
+              - name: customer_info_data
+                dataset: dataos://postgresdeviceteledepot:public/customer_info?acl=rw
+                format: csv
+                options:
+                  driver: org.postgresql.Driver
+            logLevel: INFO
+            outputs:
+              - name: output
+                dataset: dataos://lakehouse:siva/customer_info?acl=rw
+                format: Iceberg
+                options:
+                  saveMode: overwrite
+                  iceberg:
+                    properties:
+                      write.format.default: parquet
+                      write.metadata.compression-codec: gzip
+            steps:
+              - sequence:
+                  - name: output
+                    sql: >
+                      SELECT 
+                       *
+                      from customer_info_data
+                    functions:
+                      - name: cleanse_column_names
+                      - name: change_column_case
+                        case: lower

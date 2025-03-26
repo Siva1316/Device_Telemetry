@@ -1,0 +1,22 @@
+tables:
+  - name: modem_prediction
+    sql: {{ load_sql('model_prediction') }}
+    description: master prediction data
+    public: true
+
+    dimensions:
+      - name: modem_id
+        column: modem_id
+        type: string
+        description: Modem Identifier
+        primary_key: true
+
+      - name: failure_probability
+        column: failure_probability
+        type: number
+        description: Modem failure probability
+
+      - name: remaining_lifetime_years
+        column: remaining_lifetime (years)
+        type: number
+        description: Modem remaining lifetime in years        

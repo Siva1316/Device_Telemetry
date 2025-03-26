@@ -1,0 +1,79 @@
+name: failure-logs-data-qcheck
+version: v1
+type: workflow
+tags:
+  - workflow
+  - soda-checks
+description: The role involves conducting thorough and detailed quality analysis, including data assertion, of extensive raw modem data using the advanced features of the DataOS platform.
+workspace: public
+workflow:
+  #schedule:
+  #  cron: '*/5 * * * *'
+  #  concurrencyPolicy: Forbid
+  dag:
+    - name: failure-logs-data-quality
+      description: The role involves conducting thorough and detailed quality analysis, including data assertion, of extensive raw modem data using the advanced features of the DataOS platform.
+      spec:
+        stack:  soda+python:1.0 
+        logLevel: INFO
+        compute: runnable-default
+        resources:
+          requests:
+            cpu: 1000m
+            memory: 250Mi
+          limits:
+            cpu: 1000m
+            memory: 250Mi
+        stackSpec:
+          inputs:
+            - dataset: dataos://lakehouse:siva/failure_logs
+              options:
+                engine: minerva
+                clusterName: miniature
+              checks:
+                # Completeness Checks
+                - missing_count(device_id) = 0:
+                    attributes:
+                      category: Completeness
+                    name: Completeness of device_id Column
+
+                - missing_count(error_code) = 0:
+                    attributes:
+                      category: Completeness
+                    name: Completeness of error_code Column
+
+                - missing_count(failure_id) = 0:
+                    attributes:
+                      category: Completeness
+                    name: Completeness of failure_id Column
+
+                - missing_count(timestamp) = 0:
+                    attributes:
+                      category: Completeness
+                    name: Completeness of timestamp Column
+
+                # Uniqueness Checks
+                - duplicate_percent(device_id) < 0.10%:
+                    attributes:
+                      category: Uniqueness
+                    name: Uniqueness of device_id Column
+
+                # Schema Validation
+                - schema:
+                    attributes:
+                      category: Schema
+                    fail:
+                      when required column missing:
+                        - device_id
+                        - error_code
+                        - failure_id
+                        - failure_reason
+                        - issue_category
+                        - resolution_status
+                        - resolved_at
+                        - severity
+                        - timestamp
+                    name: Confirm that all required columns are present
+              profile:
+                columns:
+                  - "*"                        

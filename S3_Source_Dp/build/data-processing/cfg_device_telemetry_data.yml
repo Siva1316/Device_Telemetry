@@ -1,0 +1,97 @@
+# Data Ingestion with Transformation
+version: v1
+name: device-telmetry-trng-env
+type: workflow
+tags:
+  - crm
+  - trainingenv
+description: Ingesting and transforming device telemetry data in lakehouse
+workflow:
+  dag:
+    - name: dg-device-telmetry-data
+      description: Ingest and transform device telemetry data from S3 into Iceberg format
+      spec:
+        tags:
+          - crm
+        stack: flare:6.0
+        compute: runnable-default
+        stackSpec:
+          driver:
+            coreLimit: 2000m
+            cores: 2
+            memory: 3000m
+          executor:
+            coreLimit: 3000m
+            cores: 2
+            instances: 2
+            memory: 4000m
+          job:
+            explain: true
+            inputs:
+              - name: device_telmetry_data
+                dataset: dataos://s3deviceteledepot:none/device_telmetry_data.json?acl=rw
+                format: JSON
+                options: 
+                  multiLine: true
+            logLevel: INFO
+            outputs:
+              - name: output
+                dataset: dataos://lakehouse:siva/device_telmetry_data?acl=rw
+                format: Iceberg
+                options:
+                  saveMode: overwrite
+                  iceberg:
+                    properties:
+                      write.format.default: parquet
+                      write.metadata.compression-codec: gzip
+            steps:
+              - sequence:
+                  - name: output
+                    sql: >
+                      SELECT 
+                        device_id,
+                        timestamp,
+                        cpu_usage,
+                        memory_usage,
+                        disk_health,
+                        battery_health,
+                        temperature,
+                        fan_speed,
+                        error_code,
+                        connection_type,
+                        internet_status,
+
+                        -- Derived Metric: System Load
+                        (cpu_usage + memory_usage) / 2 AS system_load,
+
+                        -- Categorizing Disk Health
+                        CASE 
+                            WHEN disk_health >= 80 THEN 'Healthy'
+                            WHEN disk_health BETWEEN 50 AND 79 THEN 'Warning'
+                            ELSE 'Critical'
+                        END AS disk_health_status,
+
+                        -- Categorizing Battery Health
+                        CASE 
+                            WHEN battery_health >= 80 THEN 'Good'
+                            WHEN battery_health BETWEEN 50 AND 79 THEN 'Moderate'
+                            ELSE 'Low'
+                        END AS battery_health_status,
+
+                        -- Categorizing Temperature
+                        CASE 
+                            WHEN temperature < 50 THEN 'Normal'
+                            WHEN temperature BETWEEN 50 AND 70 THEN 'High'
+                            ELSE 'Overheated'
+                        END AS temperature_status,
+
+                        -- Mapping Internet Status
+                        CASE 
+                            WHEN internet_status = 'Connected' THEN 'Online'
+                            ELSE 'Offline'
+                        END AS internet_status_final
+                      FROM device_telmetry_data
+                  
+
+
+

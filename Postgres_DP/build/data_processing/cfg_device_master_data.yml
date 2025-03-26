@@ -1,0 +1,75 @@
+# Data Ingestion
+version: v1
+name: device-master-data-trng-env
+type: workflow
+tags:
+  - crm
+  - tainingenv
+  - modem performance data
+description: Ingesting data in lakehouse
+workflow:
+  dag:
+    - name: dg-device-master-data
+      # title: flatten Data Ingester
+      description: The job ingests modem performance data from postgres into icebase zone
+      spec:
+        tags:
+          - crm
+        stack: flare:6.0
+        compute: runnable-default
+        stackSpec:
+          driver:
+            coreLimit: 2000m
+            cores: 2
+            memory: 3000m
+          executor:
+            coreLimit: 3000m
+            cores: 2
+            instances: 2
+            memory: 4000m
+          job:
+            explain: true
+            inputs:
+              - name: device_master_data
+                dataset: dataos://postgresdeviceteledepot:public/device_master_data?acl=rw
+                format: csv
+                options:
+                  driver: org.postgresql.Driver
+            logLevel: INFO
+            outputs:
+              - name: output
+                dataset: dataos://lakehouse:siva/device_master_data?acl=rw
+                format: Iceberg
+                options:
+                  saveMode: overwrite
+                  iceberg:
+                    properties:
+                      write.format.default: parquet
+                      write.metadata.compression-codec: gzip
+            steps:
+              - sequence:
+                  - name: output
+                    sql: >
+                      SELECT 
+                        device_id,
+                        customer_id,
+                        brand,
+                        model,
+                        serial_number,
+                        purchase_date,
+                        warranty_status,
+                        cpu,
+                        ram,
+                        storage,
+                        gpu,
+                        bios_version,
+                        os_name,
+                        os_version,
+                        os_update_title,
+                        region_name,
+                        language_name
+                      from device_master_data
+                    functions:
+                      - name: cleanse_column_names
+                      - name: change_column_case
+                        case: lower

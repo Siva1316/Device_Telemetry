@@ -1,0 +1,54 @@
+version: v1
+name: device-events-process-trng-env
+type: workflow
+tags:
+  - crm
+  - trainingenv
+description: Ingesting and transforming device telemetry data in lakehouse
+workflow:
+  dag:
+    - name: dg-device-events-process-info-data
+      description: Ingest and transform device telemetry data from S3 into Iceberg format
+      spec:
+        tags:
+          - crm
+        stack: flare:6.0
+        compute: runnable-default
+        stackSpec:
+          driver:
+            coreLimit: 3000m
+            cores: 2
+            memory: 8000m
+          executor:
+            coreLimit: 3000m
+            cores: 2
+            instances: 4
+            memory: 12000m
+        job:
+          explain: true
+          inputs:
+            - name: device_events_process_info
+              dataset: dataos://s3deviceteledepot:none/device_events_process_info.json?acl=rw
+              format: JSON
+              options:
+                multiLine: true
+          logLevel: INFO
+          outputs:
+            - name: output
+              dataset: dataos://lakehouse:siva/device_events_info?acl=rw
+              format: Iceberg
+              options:
+                saveMode: overwrite
+                iceberg:
+                  properties:
+                    write.format.default: parquet
+                    write.metadata.compression-codec: gzip
+          steps:
+            - sequence:
+                - name: output
+                  sql: > 
+                    SELECT 
+                       *,
+                       item_data.*
+                    FROM 
+                        device_events_process_info

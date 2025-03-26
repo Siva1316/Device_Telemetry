@@ -1,0 +1,53 @@
+# Data Ingestion with Transformation
+version: v1
+name: failure-logs-trng-env
+type: workflow
+tags:
+  - crm
+  - trainingenv
+description: Ingesting and transforming device telemetry data in lakehouse
+workflow:
+  dag:
+    - name: dg-failure-logs-data
+      description: Ingest and transform device telemetry data from S3 into Iceberg format
+      spec:
+        tags:
+          - crm
+        stack: flare:6.0
+        compute: runnable-default
+        stackSpec:
+          driver:
+            coreLimit: 2000m
+            cores: 2
+            memory: 3000m
+          executor:
+            coreLimit: 3000m
+            cores: 2
+            instances: 2
+            memory: 4000m
+          job:
+            explain: true
+            inputs:
+              - name: failure_logs
+                dataset: dataos://s3deviceteledepot:none/failure_logs.json?acl=rw
+                format: JSON
+                options: 
+                  multiLine: true
+            logLevel: INFO
+            outputs:
+              - name: output
+                dataset: dataos://lakehouse:siva/failure_logs?acl=rw
+                format: Iceberg
+                options:
+                  saveMode: overwrite
+                  iceberg:
+                    properties:
+                      write.format.default: parquet
+                      write.metadata.compression-codec: gzip
+            steps:
+              - sequence:
+                  - name: output
+                    sql: >
+                      SELECT 
+                        *
+                      FROM failure_logs
