@@ -1,18 +1,18 @@
-name: modem-data-dp-training-env
+name: device-telemetry-data-dp-training-env
 version: v1beta
 entity: product
 type: data
 tags:
   - DPDomain.Network
-  - DPUsecase.Modem Failure Predictor
+  - DPUsecase.Device Failure Prediction
   - DPTier.Source Aligned
-description: A data product that monitors modem performance by tracking resource utilization, hardware health, signal strength, and error occurrences over time.
+description: A data product that monitors device performance by tracking resource utilization, hardware health, signal strength, and error occurrences over time.
 
 v1beta:
   data:
     meta:
-      title: Modem training dp
-      sourceCodeUrl: https://github.com/Siva1316/LLA_Reflection/tree/main/modem
+      title: Device telemetry data dp
+      sourceCodeUrl: https://github.com/Siva1316/Device_Telemetry/tree/main/S3_Source_Dp
  
     collaborators:
       - name: acies05
@@ -20,12 +20,18 @@ v1beta:
     
     resource:
       refType: dataos
-      ref: bundle:v1beta:modem-data-bundle-trng-env
+      ref: bundle:v1beta:device-telemetry-data-bundle-trng-env
 
     inputs:
       - refType: dataos
-        ref: dataos://modempg:public/modem_info
+        ref: dataos://s3deviceteledepot:none/device_telmetry_data.json
+      
+      - refType: dataos
+        ref: dataos://s3deviceteledepot:none/failure_logs.json
 
     outputs:
       - refType: dataos
-        ref: dataos://lakehouse:siva/modem_data
+        ref: dataos://lakehouse:siva/device_telmetry_data
+
+      - refType: dataos
+        ref: dataos://lakehouse:siva/failure_logs

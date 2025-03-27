@@ -35,7 +35,7 @@ workflow:
           logLevel: INFO
           outputs:
             - name: output
-              dataset: dataos://lakehouse:siva/device_events_info?acl=rw
+              dataset: dataos://lakehouse:siva/device_events_process_info?acl=rw
               format: Iceberg
               options:
                 saveMode: overwrite
@@ -48,7 +48,19 @@ workflow:
                 - name: output
                   sql: > 
                     SELECT 
-                       *,
-                       item_data.*
+                        key AS device_id,
+                        event.value ->> 'timestamp' AS timestamp,
+                        event.value ->> 'event_type' AS event_type,
+                        CAST(event.value ->> 'cpu_usage' AS INTEGER) AS cpu_usage,
+                        CAST(event.value ->> 'process_count' AS INTEGER) AS process_count,
+                        CAST(event.value ->> 'thread_count' AS INTEGER) AS thread_count,
+                        event.value ->> 'disk_status' AS disk_status,
+                        CAST(event.value ->> 'disk_free_space' AS DOUBLE) AS disk_free_space,
+                        CAST(event.value ->> 'network_speed' AS DOUBLE) AS network_speed,
+                        event.value ->> 'driver_status' AS driver_status,
+                        event.value ->> 'software_updates' AS software_updates
                     FROM 
-                        device_events_process_info
+                        device_events_process_info,
+                        LATERAL CROSS JOIN UNNEST(MAP_ENTRIES(json_parse(device_events_process_info))) AS t(key, value),
+                        LATERAL CROSS JOIN UNNEST(json_parse(value)) AS event;
+

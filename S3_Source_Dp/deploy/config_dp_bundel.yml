@@ -1,4 +1,4 @@
-name: modem-data-bundle-trng-env
+name: device-telemetry-data-bundle-trng-env
 version: v1beta
 type: bundle
 tags:
@@ -7,6 +7,14 @@ description: This bundle resource is for the product affinity data product.
 layer: "user"
 bundle:
   resources:
-    - id: modem-data-quality
-      file: C:\Users\DELL\Desktop\DataOS\dataos-ctl-windows-amd64\windows-amd64\LLA\modem\build\quality\config_qcheck.yml
+    - id: device-telemetry-data-quality
+      file: C:\Users\DELL\Desktop\DataOS\dataos-ctl-windows-amd64\windows-amd64\Device_Telemetry\S3_Source_Dp\build\quality\config_device_telemetry_qcheck.yml
+      workspace: public
+
+    - id: failure-logs-data-quality
+      file: C:\Users\DELL\Desktop\DataOS\dataos-ctl-windows-amd64\windows-amd64\Device_Telemetry\S3_Source_Dp\build\quality\config_failure_logs_qcheck.yml
+      workspace: public
+
+    - id: device-events-data-quality
+      file: C:\Users\DELL\Desktop\DataOS\dataos-ctl-windows-amd64\windows-amd64\Device_Telemetry\S3_Source_Dp\build\quality\config_device_events_qcheck.yml
       workspace: public

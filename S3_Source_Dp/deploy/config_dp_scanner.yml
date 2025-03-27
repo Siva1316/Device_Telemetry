@@ -1,5 +1,5 @@
 version: v1
-name: modem-data-op-scanner
+name: device-telemetry-data-op-scanner
 type: workflow
 tags:
   - scanner
@@ -22,4 +22,4 @@ workflow:
               markDeletedDataProducts: true
               dataProductFilterPattern:
                 includes:
-                 - modem-data-dp-training-env
+                 - device-telemetry-data-dp-training-env

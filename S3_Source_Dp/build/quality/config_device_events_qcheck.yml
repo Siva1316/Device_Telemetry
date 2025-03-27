@@ -26,7 +26,7 @@ workflow:
             memory: 250Mi
         stackSpec:
           inputs:
-            - dataset: dataos://lakehouse:siva/device_events_process_info
+            - dataset: dataos://lakehouse:siva/device_events_process
               options:
                 engine: minerva
                 clusterName: miniature
@@ -43,15 +43,15 @@ workflow:
                     name: Uniqueness of the modemid Column
 
                     # Completeness Constraints
-                - missing_percent(memory_usage) < 1%:
+                - missing_percent(cpu_usage) < 1%:
                     attributes:
                       category: Accuracy
                     name: Completeness of the memory_usage Column
-                - missing_percent(temperature) < 1%:
+                - missing_percent(event_type) < 1%:
                     attributes:
                       category: Accuracy
                     name: Completeness of the temperature Column
-                - missing_percent(battery_health) < 1%:
+                - missing_percent(network_speed) < 1%:
                     attributes:
                       category: Accuracy
                     name: Completeness of the battery_health Column
@@ -60,25 +60,20 @@ workflow:
                       category: Schema
                     fail:
                       when required column missing:
-                      - when required column missing:
                         - device_id
                         - timestamp
                         - cpu_usage
-                        - memory_usage
-                        - disk_health
-                        - battery_health
-                        - temperature
-                        - fan_speed
-                        - error_code
-                        - connection_type
-                        - internet_status
-                        - system_load
-                        - disk_health_status
-                        - battery_health_status
-                        - temperature_status
-                        - internet_status_final
+                        - disk_free_space
+                        - driver_status
+                        - disk_status
+                        - event_type
+                        - network_speed
+                        - process_count
+                        - software_updates
+                        - thread_count
                     name: Confirm that required columns are present
 
               profile:
                 columns:
                   - "*"                        
+
