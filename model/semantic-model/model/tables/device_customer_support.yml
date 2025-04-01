@@ -41,16 +41,6 @@ tables:
         type: number
         description: Satisfaction score
 
-      - name: replacement_count
-        column: replacement_count
-        type: number
-        description: Number of times the device was replaced
-
-      - name: repair_history
-        column: repair_history
-        type: number
-        description: Number of times the device was repaired
-
     measures:
       - name: replacement_count
         sql: "COUNT(DISTINCT CASE WHEN service_type = 'Repair/Replacement' THEN ticket_id END)"

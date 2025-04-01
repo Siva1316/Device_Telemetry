@@ -70,9 +70,9 @@ tables:
         column: thread_count
         type: number
         description: Thread Count
-        
+
     measures:
-      - name: device_id
+      - name: unique_device
         sql: device_id
         type: count
         description: Total device id records in the dataset
