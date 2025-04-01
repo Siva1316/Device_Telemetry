@@ -1,0 +1,23 @@
+views:
+  - name: warranty_and_repair_data
+    description: "This view provides insights into customer credit risk, transactions, and credit behavior."
+    public: true
+    meta:
+      title: warranty_and_repair_metrics
+      tags:
+        - DPDomain.Network
+      metric:
+        expression: "*/45 * * * *"
+        timezone: "UTC"
+        window: "day"
+
+    tables:
+      - join_path: device_customer_support
+        prefix: true
+        includes: 
+          - warranty_and_repair_metrics  # measure 
+          - purchase_date # measure columns
+          - warranty_status
+          - replacement_count
+          - repair_history
+          - device_id        # Groupby column

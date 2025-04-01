@@ -1,6 +1,12 @@
 SELECT
-  modem_id,
-  failure_probability,
-  remaining_lifetime (years)
+  device_id,
+  region_name,
+  os_update_title,
+  bios_version,
+  os_name,
+  os_version,
+  customer_id,
+  warranty_status,
+  purchase_date
 FROM
-  lakehouse.siva.modem_prediction_data
+  lakehouse.siva.device_master_data

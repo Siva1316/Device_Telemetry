@@ -28,10 +28,15 @@ v1beta:
       
       - refType: dataos
         ref: dataos://s3deviceteledepot:none/failure_logs.json
-
+      
+      - refType: dataos
+        ref: dataos://s3deviceteledepot:none/device_events_process_info.json
     outputs:
       - refType: dataos
         ref: dataos://lakehouse:siva/device_telmetry_data
 
       - refType: dataos
         ref: dataos://lakehouse:siva/failure_logs
+
+      - refType: dataos
+        ref: dataos://lakehouse:siva/device_events_process

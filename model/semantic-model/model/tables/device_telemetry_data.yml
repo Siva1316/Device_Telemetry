@@ -1,73 +1,78 @@
 tables:
-  - name: performance_data
-    sql: {{ load_sql('modem_performance') }}
-    description: Market Data
+  - name: device_telemetry_data
+    sql: {{ load_sql('device_telemetry_data') }}
+    description: Device Master Data
     public: true
 
+    joins:
+      - name: device_events_process
+        relationship: one_to_one
+        sql: "{TABLE.device_id}={device_events_process.device_id}" 
+      
     dimensions:
       - name: timestamp
         column: timestamp
-        type: time
+        type: string
         description: Parsed timestamp from transaction data
 
-      - name: modem_id
-        column: modem_id
+      - name: device_id  
+        column: device_id
         type: string
-        description: Modem Identifier
-
-      - name: concat_colu
-        column: concat_colu
-        type: string
-        description: primary Identifier
+        description: Device Identifier
         primary_key: true
 
-      - name: cpu_utilization
-        column: cpu_utilization
+      - name: cpu_usage
+        column: cpu_usage
         type: number
-        description: CPU utilization percentage
+        description: CPU Usage
 
-      - name: ram_utilization
-        column: ram_utilization
+      - name: memory_usage
+        column: memory_usage
         type: number
-        description: RAM utilization percentage
+        description: Memory utilization
 
-      - name: flash_write_cycles
-        column: flash_write_cycles
+      - name: disk_health
+        column: disk_health
         type: number
-        description: Flash memory write cycles
+        description: Disk Health 
 
-      - name: device_internal_temp
-        column: device_internal_temp
+      - name: battery_health
+        column: battery_health
         type: number
-        description: Device internal temperature in Celsius
+        description: Battery Health
 
-      - name: voltage_adapter
-        column: voltage_adapter
+      - name: temperature
+        column: temperature
         type: number
-        description: Voltage from adapter in Volts
+        description: Device internal temperature
 
-      - name: unexpected_restarts
-        column: unexpected_restarts
+      - name: fan_speed
+        column: fan_speed
         type: number
-        description: Count of unexpected device restarts
-
-      - name: signal_strength
-        column: signal_strength
-        type: number
-        description: Count of unexpected device restarts
+        description: Fan Speed
 
       - name: error_code
         column: error_code
         type: string
-        description: what is the error code per modem
+        description: What is the error code per modem
 
+      - name: internet_status
+        column: internet_status
+        type: string
+        description: Internet status
+      
+      - name: process_count
+        column: process_count
+        type: number
+        description: Process Count
+
+      - name: thread_count
+        column: thread_count
+        type: number
+        description: Thread Count
+        
     measures:
-      - name: total_records
-        sql: timestamp
+      - name: device_id
+        sql: device_id
         type: count
-        description: Total records in the dataset
-
-      - name: unique_modems
-        sql: modem_id
-        type: count_distinct
-        description: Total unique modems
+        description: Total device id records in the dataset

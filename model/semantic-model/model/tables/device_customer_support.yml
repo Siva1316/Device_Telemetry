@@ -1,0 +1,58 @@
+tables:
+  - name: device_customer_support
+    sql: {{ load_sql('device_customer_support') }}
+    description: Device customer support
+    public: true
+
+    dimensions:
+      - name: device_id
+        column: device_id
+        type: string
+        description: device id for device data
+        primary_key: true
+
+      - name: customer_id
+        column: customer_id
+        type: string
+        description: Customer id for device data
+
+      - name: service_type
+        column: service_type
+        type: string
+        description: Service Type
+      
+      - name: time_to_fix
+        column: time_to_fix
+        type: number
+        description: Time to fix
+
+      - name: satisfaction_score
+        column: satisfaction_score
+        type: number
+        description: Satisfaction score
+
+      - name: purchase_date
+        column: purchase_date
+        type: string
+        description: Purchase Date
+
+      - name: warranty_status
+        column: warranty_status
+        type: string
+        description: Warranty Status
+
+    measures:
+      - name: warranty_and_repair_metrics
+        type: grouped_table
+        dimensions:
+          - device_id
+          - purchase_date
+          - warranty_status
+          - replacement_count
+          - repair_history
+        measures:
+          - { name: replacement_count, sql: "COUNT(DISTINCT CASE WHEN service_type = 'Replacement' THEN device_id END)", type: number }
+          - { name: repair_history, sql: "COUNT(DISTINCT CASE WHEN resolution = 'Repaired' THEN device_id END)", type: number }
+        description: "Warranty and repair data including replacement count and repair history."
+
+

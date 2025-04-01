@@ -1,0 +1,23 @@
+tables:
+  - name: device_customer_info
+    sql: {{ load_sql('device_customer_info') }}
+    description: Device customer info
+    public: true
+
+    dimensions:
+      - name: customer_id
+        column: customer_id
+        type: string
+        description: Customer id for device data
+        primary_key: true
+
+      - name: purchase_history
+        column: purchase_history
+        type: string
+        description: Purchase History
+        
+
+      - name: warranty_status
+        column: warranty_status
+        type: string
+        description: Warrenty status

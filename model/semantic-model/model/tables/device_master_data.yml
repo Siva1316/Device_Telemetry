@@ -1,0 +1,70 @@
+tables:
+  - name: device_master_data
+    sql: {{ load_sql('device-master-data') }}
+    description: Device Events Process
+    public: true
+  
+    dimensions:
+      - name: device_id
+        column: device_id
+        type: string
+        description: Device Identifier
+        primary_key: true
+
+      - name: region_name
+        column: region_name
+        type: string
+        description: Region Name
+        
+      - name: os_update_title
+        column: os_update_title
+        type: string
+        description: OS update title
+
+      - name: bios_version
+        column: bios_version
+        type: string
+        description: Bios Version 
+
+      - name: os_name
+        column: os_name
+        type: string
+        description: OS Name
+
+      - name: os_version
+        column: os_version
+        type: string
+        description: OS Version
+
+      - name: customer_id
+        column: customer_id
+        type: string
+        description: Customer ID
+
+      - name: warranty_status
+        column: warranty_status
+        type: string
+        description: Warranty Status
+        
+      - name: purchase_date
+        column: purchase_date
+        type: string
+        description: Purchase date
+
+    measures:
+      - name: device_usage_metrics
+        type: grouped_table
+        dimensions: 
+          - device_id
+          - region_name
+          - os_update_title
+          - driver_status
+          - bios_version
+          - os_name
+          - os_version
+        measures:
+          - { name: device_count, sql: device_id, type: count }
+          - { name: network_latency, sql: network_latency, type: avg }
+          - { name: total_service_calls, sql: service_calls, type: sum }
+          - { name: satisfaction_score, sql: satisfaction_score, type: avg }
+        description: "Device usage including all required fields in a single metric."

@@ -1,0 +1,58 @@
+tables:
+  - name: device_events_process
+    sql: {{ load_sql('device_events_process') }}
+    description: Device Events Process
+    public: true
+
+    dimensions:
+      - name: timestamp
+        column: timestamp
+        type: string
+        description: Parsed timestamp from transaction data
+
+      - name: device_id
+        column: device_id
+        type: string
+        description: Device Identifier
+        primary_key: true
+
+      - name: cpu_usage
+        column: cpu_usage
+        type: number
+        description: CPU Usage
+        
+      - name: disk_free_space
+        column: disk_free_space
+        type: number
+        description: Disk Space
+
+      - name: disk_status
+        column: disk_status
+        type: string
+        description: Disk status 
+
+      - name: driver_status
+        column: driver_status
+        type: string
+        description: Driver Status
+
+      - name: network_speed
+        column: network_speed
+        type: number
+        description: Network Speed
+
+      - name: process_count
+        column: process_count
+        type: number
+        description: Process Count
+
+      - name: thread_count
+        column: thread_count
+        type: number
+        description: Thread Count
+
+    measures:
+      - name: unique_device
+        sql: device_id
+        type: count
+        description: Total device id in the dataset

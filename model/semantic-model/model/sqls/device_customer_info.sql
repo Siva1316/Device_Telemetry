@@ -1,6 +1,6 @@
 SELECT
-  timestamp,
-  modem_id,
-  concat(cast(timestamp as varchar) , '-' , modem_id) as concat_colu
+  customer_id,
+  purchase_history,
+  warranty_status
 FROM
-  lakehouse.siva.modem_data
+  lakehouse.siva.customer_info

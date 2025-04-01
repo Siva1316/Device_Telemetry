@@ -1,0 +1,73 @@
+tables:
+  - name: device_failure_data
+    sql: {{ load_sql('device-failure-data') }}
+    description: Device failure data
+    public: true
+
+    dimensions:
+      - name: device_id
+        column: device_id
+        type: string
+        description: Device id for device data
+        primary_key: true
+
+      - name: error_code
+        column: error_code
+        type: string
+        description: Error code for each device id
+        
+      - name: failure_id
+        column: failure_id
+        type: string
+        description: Failure id for device
+      
+      - name: failure_reason
+        column: failure_reason
+        type: string
+        description: Failure id for device
+      
+      - name: issue_category
+        column: issue_category
+        type: string
+        description: Failure id for device
+      
+      - name: resolution_status
+        column: resolution_status
+        type: string
+        description: Failure id for device
+
+      - name: resolved_at
+        column: resolved_at
+        type: string
+        description: Failure id for device
+
+      - name: severity
+        column: severity
+        type: string
+        description: Failure id for device
+      
+      - name: timestamp
+        column: timestamp
+        type: string
+        description: Failure id for device
+
+    measures:
+      - name: Device Failure History
+        type: grouped_table
+        dimensions: 
+          - device_id
+          - failure_id
+          - failure_reason
+          - timestamp
+          - issue_category
+          - error_code
+          - resolution_status
+          - resolved_at
+          - severity
+        measures:
+          - { name: total_failures, sql: failure_id, type: count }
+          - { name: unresolved_failures, sql: "CASE WHEN resolution_status = 'Unresolved' THEN 1 ELSE 0 END", type: sum }
+          - { name: resolved_failures, sql: "CASE WHEN resolution_status = 'Resolved' THEN 1 ELSE 0 END", type: sum }
+          - { name: resolution_rate, sql: "COUNT(CASE WHEN resolution_status = 'Resolved' THEN 1 END) * 1.0 / COUNT(failure_id)", type: avg }
+          - { name: avg_resolution_time, sql: "TIMESTAMPDIFF(HOUR, timestamp, resolved_at)", type: avg }
+        description: "Device failure metrics including failure counts, resolution status, and resolution rate."
