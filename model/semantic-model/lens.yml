@@ -5,7 +5,7 @@ layer: user # DataOS Layer (optional)
 type: lens # Type of Resource (mandatory)
 tags: # Tags (optional)
   - lens
-  - modem predict failure
+  - Device Failure Prediction
 description: This data model provides modem failure related data. # Lens Resource description (optional)
 
 # LENS-SPECIFIC SECTION
@@ -23,7 +23,7 @@ lens:
     
   repo: # Lens model code repository configuration (mandatory)
     url: https://github.com/Siva1316/Device_Telemetry # URL of repository containing the Lens model (mandatory)
-    lensBaseDir: LLA_Reflection/ml_model/build/semantic-model/model # Relative path of the Lens 'model' directory in repository (mandatory)
+    lensBaseDir: Device_Telemetry/model/semantic-model/model # Relative path of the Lens 'model' directory in repository (mandatory)
     syncFlags: # Additional flags used during synchronization (optional)
       - --ref=main # Repository Branch (optional)
 

@@ -41,18 +41,17 @@ tables:
         type: string
         description: Warranty Status
 
-    measures:
-      - name: warranty_and_repair_metrics
-        type: grouped_table
-        dimensions:
-          - device_id
-          - purchase_date
-          - warranty_status
-          - replacement_count
-          - repair_history
-        measures:
-          - { name: replacement_count, sql: "COUNT(DISTINCT CASE WHEN service_type = 'Replacement' THEN device_id END)", type: number }
-          - { name: repair_history, sql: "COUNT(DISTINCT CASE WHEN resolution = 'Repaired' THEN device_id END)", type: number }
-        description: "Warranty and repair data including replacement count and repair history."
+      - name: repair_history
+        column: repair_history
+        type: number
+        description: Repair history based on the resolution type
 
+    measures:
+      - name: replacement_count
+        sql: "COUNT(DISTINCT CASE WHEN service_type = 'Repair/Replacement' THEN device_id END)"
+        type: number
+        description: Total number of replacements
+      
+
+      
 

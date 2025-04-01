@@ -15,9 +15,6 @@ views:
       - join_path: device_customer_support
         prefix: true
         includes: 
-          - warranty_and_repair_metrics  # measure 
-          - purchase_date # measure columns
-          - warranty_status
-          - replacement_count
-          - repair_history
+          - replacement_count  # measure 
+          - service_type # measure columns
           - device_id        # Groupby column

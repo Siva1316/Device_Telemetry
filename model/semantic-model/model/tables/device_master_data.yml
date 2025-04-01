@@ -50,21 +50,3 @@ tables:
         column: purchase_date
         type: string
         description: Purchase date
-
-    measures:
-      - name: device_usage_metrics
-        type: grouped_table
-        dimensions: 
-          - device_id
-          - region_name
-          - os_update_title
-          - driver_status
-          - bios_version
-          - os_name
-          - os_version
-        measures:
-          - { name: device_count, sql: device_id, type: count }
-          - { name: network_latency, sql: network_latency, type: avg }
-          - { name: total_service_calls, sql: service_calls, type: sum }
-          - { name: satisfaction_score, sql: satisfaction_score, type: avg }
-        description: "Device usage including all required fields in a single metric."
