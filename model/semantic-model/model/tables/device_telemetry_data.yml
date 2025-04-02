@@ -62,17 +62,13 @@ tables:
         description: Internet status
       
       - name: process_count
-        column: process_count
+        column: "{device_events_process.process_count}"
         type: number
         description: Process Count
+        public: false
 
       - name: thread_count
-        column: thread_count
+        column: "{device_events_process.thread_count}"
         type: number
         description: Thread Count
-
-    measures:
-      - name: unique_device
-        sql: device_id
-        type: count
-        description: Total device id records in the dataset
+        public: false

@@ -3,7 +3,16 @@ tables:
     sql: {{ load_sql('device-master-data') }}
     description: Device Events Process
     public: true
-  
+
+    joins:
+      - name: device_events_process
+        relationship: one_to_one
+        sql: "{TABLE.device_id}={device_events_process.device_id}"
+      
+      - name: device_customer_support
+        relationship: one_to_one
+        sql: "{TABLE.device_id}={device_customer_support.device_id}"
+    
     dimensions:
       - name: device_id
         column: device_id
@@ -50,3 +59,27 @@ tables:
         column: purchase_date
         type: string
         description: Purchase date
+
+      - name: driver_status
+        column: "{device_events_process.driver_status}"
+        type: string
+        description: Driver Status
+        public: false
+      
+      - name: satisfaction_score
+        column: "{device_customer_support.satisfaction_score}"
+        type: number
+        description: Satisfaction score
+        public: false
+
+      - name: network_speed
+        column: "{device_events_process.network_speed}"
+        type: number
+        description: Network Speed
+        public: false
+
+    measures:
+      - name: network_latency
+        sql: "CASE WHEN network_speed > 47 THEN 'low' WHEN network_speed BETWEEN 20 AND 47 THEN 'medium' WHEN network_speed < 20 AND network_speed > 0 THEN 'high' ELSE 'unknown' END" 
+        type: count
+        description: Total device id records in the dataset

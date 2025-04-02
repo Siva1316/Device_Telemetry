@@ -4,6 +4,15 @@ tables:
     description: Device customer support
     public: true
 
+    joins:
+      - name: device_master_data
+        relationship: one_to_one
+        sql: "{TABLE.device_id}={device_master_data.device_id}" 
+
+      - name: device_failure_data
+        relationship: one_to_one
+        sql: "{TABLE.device_id}={device_failure_data.device_id}"
+
     dimensions:
       - name: device_id
         column: device_id
@@ -15,16 +24,19 @@ tables:
         column: customer_id
         type: string
         description: Customer ID for device data
+        primary_key: true
 
       - name: purchase_date
-        column: purchase_date
+        column: "{device_master_data.purchase_date}"
         type: string
         description: Purchase Date of the device
+        public: false
 
       - name: warranty_status
-        column: warranty_status
+        column: "{device_master_data.warranty_status}"
         type: string
         description: Warranty status of the device
+        public: false
 
       - name: service_type
         column: service_type
@@ -48,6 +60,6 @@ tables:
         description: Total number of replacements
       
       - name: repair_history
-        sql: "COUNT(DISTINCT CASE WHEN resolution_status = 'Fixed' THEN failure_id END)"
+        sql: "COUNT(DISTINCT CASE WHEN device_failure_data.resolution_status = 'Fixed' THEN failure_id END)"
         type: number
         description: Total number of repairs

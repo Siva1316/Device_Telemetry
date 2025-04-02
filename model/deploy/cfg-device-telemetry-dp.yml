@@ -1,0 +1,47 @@
+name: device-telemetry-dp-training-env
+version: v1beta
+entity: product
+type: data
+tags:
+  - DPDomain.Network
+  - DPUsecase.Device Failure Prediction
+  - DPTier.Source Aligned
+description: A data product that monitors modem prediction by tracking resource utilization, hardware health, signal strength, and error occurrences over time.
+
+v1beta:
+  data:
+    meta:
+      title: Device telemetry 360 dp
+      sourceCodeUrl: https://github.com/Siva1316/LLA_Reflection/tree/main/ml_model
+ 
+    collaborators:
+      - name: acies05
+        description: owner
+    
+    resource:
+      refType: dataos
+      ref: bundle:v1beta:device-telemetry-data-bundle-trng-env
+
+    inputs:
+      - refType: dataos
+        ref:  dataos://lakehouse:siva/customer_info
+
+      - refType: dataos
+        ref:  dataos://lakehouse:siva/customer_support_feedback
+
+      - refType: dataos
+        ref:   dataos://lakehouse:siva/device_master_data
+
+      - refType: dataos
+        ref:  dataos://lakehouse:siva/device_events_process
+
+      - refType: dataos
+        ref:  dataos://lakehouse:siva/device_telmetry_data
+
+      - refType: dataos
+        ref:   dataos://lakehouse:siva/failure_logs
+    
+    ports:
+      lens:
+        ref: lens:v1alpha:device-telemetry-lens-trng-env:public
+        refType: dataos   

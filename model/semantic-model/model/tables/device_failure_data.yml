@@ -3,6 +3,11 @@ tables:
     sql: {{ load_sql('device-failure-data') }}
     description: Device failure data
     public: true
+    
+    joins:
+      - name: device_telemetry_data
+        relationship: one_to_one
+        sql: "{TABLE.device_id}={device_telemetry_data.device_id}"
 
     dimensions:
       - name: device_id

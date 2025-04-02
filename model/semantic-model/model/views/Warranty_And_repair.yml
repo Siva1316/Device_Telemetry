@@ -5,7 +5,9 @@ views:
     meta:
       title: warranty_and_repair_metrics
       tags:
-        - DPDomain.Network
+        - DPDomain.Network  
+        - DPUsecase.Device Failure Prediction
+        - DPTier.Consumer Aligned 
       metric:
         expression: "*/45 * * * *"
         timezone: "UTC"
@@ -15,6 +17,10 @@ views:
       - join_path: device_customer_support
         prefix: true
         includes: 
-          - replacement_count  # measure 
-          - service_type # measure columns
-          - device_id        # Groupby column
+          - device_id    
+          - warranty_status
+          - purchase_date
+          - repair_history
+          - replacement_count  
+             
+     

@@ -16,7 +16,6 @@ tables:
         type: string
         description: Purchase History
         
-
       - name: warranty_status
         column: warranty_status
         type: string
