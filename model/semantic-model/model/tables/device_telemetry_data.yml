@@ -61,14 +61,12 @@ tables:
         type: string
         description: Internet status
       
-      - name: process_count
+      - name: process_counts
         column: "{device_events_process.process_count}"
         type: number
         description: Process Count
-        public: false
 
-      - name: thread_count
+      - name: thread_counts
         column: "{device_events_process.thread_count}"
         type: number
         description: Thread Count
-        public: false
