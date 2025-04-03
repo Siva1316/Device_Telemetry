@@ -64,19 +64,16 @@ tables:
         column: "{device_events_process.driver_status}"
         type: string
         description: Driver Status
-        public: false
       
       - name: satisfaction_scores
         column: "{device_customer_support.satisfaction_score}"
         type: number
         description: Satisfaction score
-        public: false
 
       - name: network_speeds
         column: "{device_events_process.network_speed}"
         type: number
         description: Network Speed
-        public: false
 
     measures:
       - name: network_latency

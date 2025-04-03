@@ -59,4 +59,5 @@ tables:
         column: concat_colu
         type: string
         description: Concatination of different columns
+        public: true
         primary_key: true
