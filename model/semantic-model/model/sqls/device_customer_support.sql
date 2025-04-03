@@ -1,5 +1,6 @@
 SELECT
   device_id,
+  ticket_id,
   customer_id,
   resolution,
   service_type,

@@ -60,19 +60,19 @@ tables:
         type: string
         description: Purchase date
 
-      - name: driver_status
+      - name: driver_statu
         column: "{device_events_process.driver_status}"
         type: string
         description: Driver Status
         public: false
       
-      - name: satisfaction_score
+      - name: satisfaction_scores
         column: "{device_customer_support.satisfaction_score}"
         type: number
         description: Satisfaction score
         public: false
 
-      - name: network_speed
+      - name: network_speeds
         column: "{device_events_process.network_speed}"
         type: number
         description: Network Speed
@@ -80,6 +80,6 @@ tables:
 
     measures:
       - name: network_latency
-        sql: "CASE WHEN network_speed > 47 THEN 'low' WHEN network_speed BETWEEN 20 AND 47 THEN 'medium' WHEN network_speed < 20 AND network_speed > 0 THEN 'high' ELSE 'unknown' END" 
-        type: count
+        sql: "CASE WHEN {TABLE.network_speeds} > 47 THEN 'low' WHEN {TABLE.network_speeds} BETWEEN 20 AND 47 THEN 'medium' WHEN {TABLE.network_speeds} < 20 AND {TABLE.network_speeds} > 0 THEN 'high' ELSE 'unknown' END" 
+        type: string
         description: Total device id records in the dataset

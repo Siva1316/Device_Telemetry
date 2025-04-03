@@ -26,13 +26,13 @@ tables:
         description: Customer ID for device data
         primary_key: true
 
-      - name: purchase_date
+      - name: purchase_dates
         column: "{device_master_data.purchase_date}"
         type: string
         description: Purchase Date of the device
         public: false
 
-      - name: warranty_status
+      - name: warranty_statu
         column: "{device_master_data.warranty_status}"
         type: string
         description: Warranty status of the device
@@ -42,6 +42,11 @@ tables:
         column: service_type
         type: string
         description: Service Type
+
+      - name: ticket_id
+        column: ticket_id
+        type: string
+        description: Ticket ID
       
       - name: time_to_fix
         column: time_to_fix
@@ -53,13 +58,23 @@ tables:
         type: number
         description: Satisfaction score
 
+      - name: resolution_statuss
+        column: "{device_failure_data.resolution_status}"
+        type: string
+        description: Resolution status for device
+
+      - name : failure_ids
+        column: "{device_failure_data.failure_id}"
+        type: string
+        description: Failure id for device
+
     measures:
       - name: replacement_count
-        sql: "COUNT(DISTINCT CASE WHEN service_type = 'Repair/Replacement' THEN ticket_id END)"
+        sql: "COUNT(DISTINCT CASE WHEN {TABLE.service_type} = 'Repair/Replacement' THEN {TABLE.ticket_id} END)"
         type: number
         description: Total number of replacements
       
       - name: repair_history
-        sql: "COUNT(DISTINCT CASE WHEN device_failure_data.resolution_status = 'Fixed' THEN failure_id END)"
+        sql: "COUNT(DISTINCT CASE WHEN {TABLE.resolution_statuss} = 'Fixed' THEN {TABLE.failure_ids} END)"
         type: number
         description: Total number of repairs
