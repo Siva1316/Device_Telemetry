@@ -8,6 +8,7 @@ SELECT
   fan_speed,
   error_code,
   internet_status,
-  timestamp
+  timestamp,
+  concat(cast(timestamp as varchar) , '-' , device_id) as concat_colu
 FROM
   lakehouse.siva.device_telmetry_data

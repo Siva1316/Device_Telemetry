@@ -10,6 +10,12 @@ tables:
         sql: "{TABLE.device_id}={device_events_process.device_id}" 
       
     dimensions:
+      - name: concat_colu
+        column: concat_colu
+        type: string
+        description: Concatination of different columns
+        primary_key: true
+
       - name: timestamp
         column: timestamp
         type: string
@@ -19,7 +25,6 @@ tables:
         column: device_id
         type: string
         description: Device Identifier
-        primary_key: true
 
       - name: cpu_usage
         column: cpu_usage

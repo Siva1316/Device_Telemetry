@@ -14,7 +14,6 @@ tables:
         column: device_id
         type: string
         description: Device id for device data
-        primary_key: true
 
       - name: error_code
         column: error_code
@@ -60,4 +59,4 @@ tables:
         column: concat_colu
         type: string
         description: Concatination of different columns
-
+        primary_key: true
