@@ -24,7 +24,6 @@ tables:
         column: customer_id
         type: string
         description: Customer ID for device data
-        primary_key: true
 
       - name: purchase_dates
         column: "{device_master_data.purchase_date}"

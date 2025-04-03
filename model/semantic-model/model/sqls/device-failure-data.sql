@@ -7,6 +7,7 @@ SELECT
   resolution_status,
   resolved_at,
   severity,
-  timestamp
+  timestamp,
+  concat(cast(timestamp as varchar) , '-' , device_id) as concat_colu
 FROM
   lakehouse.siva.failure_logs
