@@ -7,15 +7,13 @@ tables:
     joins:
       - name: device_events_process
         relationship: many_to_one
-        sql: "{TABLE.device_id} = {device_events_process.device_id} AND {TABLE.timestamp} = {device_events_process.timestamp}" 
+        sql: "{TABLE.device_id} = {device_events_process.device_id}" 
       
     dimensions:
       - name: timestamp
         column: timestamp
         type: string
-        primary_key: true
         description: Parsed timestamp from transaction data
-        public: true
 
       - name: device_id  
         column: device_id
