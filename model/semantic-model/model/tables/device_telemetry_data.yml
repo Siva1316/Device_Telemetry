@@ -7,7 +7,7 @@ tables:
     joins:
       - name: device_events_process
         relationship: many_to_one
-        sql: "{TABLE.device_id} = {device_events_process.device_id}" 
+        sql: "{TABLE.device_id} = {device_events_process.device_id} AND {TABLE.timestamp} = {device_events_process.timestamp}" 
       
     dimensions:
       - name: timestamp
