@@ -1,0 +1,28 @@
+tables:
+  - name: device_predictions_data
+    sql: {{ load_sql('device_prediction') }}
+    description: device prediction data
+    public: true
+
+    dimensions:
+      - name: device_id  
+        column: device_id
+        type: string
+        description: Device Identifier
+        primary_key: True
+        public: true
+
+      - name: risk_score
+        column: risk_score
+        type: number
+        description: Risk Score
+
+      - name: life_expected
+        column: life_expected (years)
+        type: number
+        description: life expectation in years
+
+      - name: failure_status  
+        column: failure_status
+        type: string
+        description: Failure Status

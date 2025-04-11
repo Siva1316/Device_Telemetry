@@ -9,6 +9,9 @@ tables:
         relationship: many_to_one
         sql: "{TABLE.device_id} = {device_events_process.device_id} AND {TABLE.timestamp} = {device_events_process.timestamp}" 
       
+      - name : device_predictions_data
+        relationship: many_to_one
+        sql: "{TABLE.device_id} = {device_predictions_data.device_id}"
     dimensions:
       - name: timestamp
         column: timestamp
@@ -71,3 +74,18 @@ tables:
         column: "{device_events_process.thread_count}"
         type: number
         description: Thread Count
+
+      - name: risk_scores
+        column: "{device_predictions_data.risk_score}"
+        type: number
+        description: Risk Score
+
+      - name: life_expected
+        column: "{device_predictions_data.life_expected (years)}"
+        type: number
+        description: life expectation in years
+
+      - name: Failure_status  
+        column: "{device_predictions_data.failure_status}"
+        type: string
+        description: Failure Status

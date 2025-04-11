@@ -55,4 +55,4 @@ tables:
       - name: unique_device
         sql: device_id
         type: count
-        description: Total device id in the dataset
+        description: Total device in the dataset
