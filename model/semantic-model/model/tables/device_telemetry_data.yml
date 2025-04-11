@@ -81,7 +81,8 @@ tables:
         description: Risk Score
 
       - name: life_expected
-        column: "{device_predictions_data.life_expected (years)}"
+        column: "{device_predictions_data.\"life_expected (years)\ }"
+
         type: number
         description: life expectation in years
 
