@@ -40,6 +40,9 @@ v1beta:
 
       - refType: dataos
         ref:   dataos://lakehouse:siva/failure_logs
+
+      - refType: dataos
+        ref:  dataos://lakehouse:siva/device_prediction_data
     
     ports:
       lens:

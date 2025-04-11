@@ -15,7 +15,7 @@ views:
         # excludes: 
         #   - share_price_data.mkt_close_value        
     tables:
-      - join_path: device_predictions
+      - join_path: device_predictions_data
         prefix: true
         includes:
           - device_id
