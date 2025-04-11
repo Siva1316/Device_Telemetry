@@ -74,19 +74,3 @@ tables:
         column: "{device_events_process.thread_count}"
         type: number
         description: Thread Count
-
-      - name: risk_scores
-        column: "{device_predictions_data.risk_score}"
-        type: number
-        description: Risk Score
-
-      - name: life_expected
-        column: "{device_predictions_data.\"life_expected (years)\ }"
-
-        type: number
-        description: life expectation in years
-
-      - name: Failure_status  
-        column: "{device_predictions_data.failure_status}"
-        type: string
-        description: Failure Status
