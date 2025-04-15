@@ -7,7 +7,7 @@ tables:
     dimensions:
       - name: timestamp
         column: timestamp
-        type: string
+        type: time
         description: Parsed timestamp from transaction data
 
       - name: device_id

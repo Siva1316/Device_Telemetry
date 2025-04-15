@@ -52,7 +52,7 @@ tables:
       
       - name: timestamp
         column: timestamp
-        type: string
+        type: time
         description: Failure id for device
 
       - name: concat_colu

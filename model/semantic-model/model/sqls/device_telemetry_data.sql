@@ -8,6 +8,6 @@ SELECT
   fan_speed,
   error_code,
   internet_status,
-  timestamp
+  CAST(timestamp AS TIMESTAMP) AS timestamp
 FROM
   lakehouse.siva.device_telmetry_data

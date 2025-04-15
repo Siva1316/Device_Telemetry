@@ -88,6 +88,11 @@ tables:
         type: number
         description: Network Speed
 
+      - name: timestamps
+        column: "{device_telemetry_data.timestamp}"
+        type: time
+        description: Time stamp
+
     measures:
       - name: network_latency
         sql: "CASE WHEN {TABLE.network_speeds} > 47 THEN 'low' WHEN {TABLE.network_speeds} BETWEEN 20 AND 47 THEN 'medium' WHEN {TABLE.network_speeds} < 20 AND {TABLE.network_speeds} > 0 THEN 'high' ELSE 'unknown' END" 

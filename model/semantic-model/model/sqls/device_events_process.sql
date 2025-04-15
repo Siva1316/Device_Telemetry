@@ -7,6 +7,6 @@ SELECT
   network_speed,
   process_count,
   thread_count,
-  timestamp
+  CAST(timestamp AS TIMESTAMP) AS timestamp
 FROM
   lakehouse.siva.device_events_process
