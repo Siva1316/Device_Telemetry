@@ -1,0 +1,36 @@
+views:
+  - name: device_failure_history
+    description: "This view provides insights into customer credit risk, transactions, and credit behavior."
+    public: true
+    meta:
+      title: device_failure_history_metrics
+      tags:
+        - DPDomain.Network  
+        - DPUsecase.Device Failure Prediction
+        - DPTier.Consumer Aligned 
+      metric:
+        expression: "*/45 * * * *"
+        timezone: "UTC"
+        window: "day"
+
+    tables:
+      - join_path: device_master_data
+        prefix: true
+        includes:
+          - unique_device
+          - device_id
+          - region_name
+          - timestamps
+
+      - join_path: device_failure_data
+        prefix: true
+        includes: 
+          - failure_id
+          - error_code   
+          - failure_reason
+          - issue_category
+          - resolution_status
+          - resolved_at
+          - severity
+             
+     
