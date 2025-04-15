@@ -14,13 +14,17 @@ views:
         window: "day"
 
     tables:
+      - join_path: device_master_data
+        prefix: true
+        includes:
+          - timestamps
+
       - join_path: device_customer_support
         prefix: true
         includes: 
           - repair_history  
           - resolution_statuss
           - device_id    
-          - purchase_date
 
              
      
