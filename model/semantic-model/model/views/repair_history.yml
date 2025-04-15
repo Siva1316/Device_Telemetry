@@ -1,5 +1,5 @@
 views:
-  - name: warranty_and_repair_data
+  - name: repair_history_metrics
     description: "This view provides insights into customer credit risk, transactions, and credit behavior."
     public: true
     meta:
@@ -17,10 +17,9 @@ views:
       - join_path: device_customer_support
         prefix: true
         includes: 
-          - repair_history
-          - replacement_count  
+          - repair_history  
+          - resolution_statuss
           - device_id    
-          - warranty_status
           - purchase_date
 
              

@@ -1,5 +1,5 @@
 views:
-  - name: device_failure_history
+  - name: device_failure_metrics
     description: "This view provides insights into customer credit risk, transactions, and credit behavior."
     public: true
     meta:

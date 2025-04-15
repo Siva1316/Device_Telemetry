@@ -1,0 +1,26 @@
+views:
+  - name: replacement_count_metrics
+    description: "This view provides insights into customer credit risk, transactions, and credit behavior."
+    public: true
+    meta:
+      title: warranty_and_repair_metrics
+      tags:
+        - DPDomain.Network  
+        - DPUsecase.Device Failure Prediction
+        - DPTier.Consumer Aligned 
+      metric:
+        expression: "*/45 * * * *"
+        timezone: "UTC"
+        window: "day"
+
+    tables:
+      - join_path: device_customer_support
+        prefix: true
+        includes: 
+          - replacement_count  
+          - service_type
+          - device_id    
+          - purchase_date
+
+             
+     
