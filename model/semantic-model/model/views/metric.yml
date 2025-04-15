@@ -15,10 +15,16 @@ views:
         # excludes: 
         #   - share_price_data.mkt_close_value        
     tables:
+      - join_path: device_master_data
+        prefix: true
+        includes:
+          - timestamp
+          - warranty_status
+          - device_id
+          
       - join_path: device_predictions_data
         prefix: true
         includes:
-          - device_id
           - risk_score
           - life_expected
           - failure_status

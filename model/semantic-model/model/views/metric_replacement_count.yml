@@ -15,9 +15,9 @@ views:
         # excludes: 
         #   - share_price_data.mkt_close_value        
     tables:
-      - join_path: device_customer_support
+      - join_path: device_master_data
         prefix: true
         includes:
-          - replacement_count
-          - service_type
+          - timestamp
+          - warranty_status
           - device_id
