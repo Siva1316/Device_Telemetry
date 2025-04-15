@@ -12,6 +12,19 @@ tables:
       - name: device_customer_support
         relationship: one_to_one
         sql: "{TABLE.device_id}={device_customer_support.device_id}"
+
+      - name: device_telemetry_data
+        relationship: one_to_one
+        sql: "{TABLE.device_id}={device_telemetry_data.device_id}"
+
+      - name: device_failure_data
+        relationship: one_to_one
+        sql: "{TABLE.device_id}={device_failure_data.device_id}"
+
+      - name: device_customer_info
+        relationship: one_to_one
+        sql: "{TABLE.device_id}={device_customer_info.customer_id}"
+
     
     dimensions:
       - name: device_id

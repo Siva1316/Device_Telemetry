@@ -22,12 +22,7 @@ views:
           - risk_score
           - life_expected
           - failure_status
-
-      - join_path: device_telemetry_data
-        prefix: true
-        includes:
-          - unique_device
-
+          
       - join_path: device_customer_support
         prefix: true
         includes:
