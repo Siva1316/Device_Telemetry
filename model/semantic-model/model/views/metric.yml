@@ -22,3 +22,9 @@ views:
           - risk_score
           - life_expected
           - failure_status
+
+      - join_path: device_customer_support
+        prefix: true
+        includes:
+          - replacement_count
+          - repair_history
