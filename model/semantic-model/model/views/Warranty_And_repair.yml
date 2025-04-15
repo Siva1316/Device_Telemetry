@@ -17,10 +17,11 @@ views:
       - join_path: device_customer_support
         prefix: true
         includes: 
+          - repair_history
+          - replacement_count  
           - device_id    
           - warranty_status
           - purchase_date
-          - repair_history
-          - replacement_count  
+
              
      
