@@ -1,5 +1,5 @@
 views:
-  - name: device_replacement_count
+  - name: device_count
     description: A predictive analytics model that forecasts potential modem failures based on key performance metrics like CPU utilization, temperature, voltage, and error patterns. It helps in proactive maintenance, reducing downtime, and improving customer experience.
     public: true
     meta:
@@ -18,6 +18,7 @@ views:
       - join_path: device_master_data
         prefix: true
         includes:
-          - timestamp
-          - warranty_status
+          - unique_device
           - device_id
+          - region_name
+          - timestamp

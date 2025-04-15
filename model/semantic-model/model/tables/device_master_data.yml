@@ -94,4 +94,7 @@ tables:
         type: string
         description: Total device id records in the dataset
 
-      - 
+      - name: unique_device
+        sql: device_id
+        type: count
+        description: Total device in the dataset
